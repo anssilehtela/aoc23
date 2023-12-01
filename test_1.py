@@ -1,13 +1,24 @@
 import pytest
+import aoc23.data as data
 c_values = """1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet"""
 
-puzzle_input = """FILTERED"""
-
 textual_numbers = ['notexisting', 'one', 'two', 'three', 'four', 'five',
                    'six', 'seven', 'eight', 'nine', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+
+def decode_calibration_list(lines):
+    sum = 0
+    for line in lines.split():
+        sum += int(decode_calibration(line))
+    return sum
+
+
+def decode_calibration(line):
+    first, last = get_first_and_last_digit_in_string(line)
+    return convert_to_num(first) + convert_to_num(last)
 
 
 def get_first_and_last_digit_in_string(line):
@@ -45,18 +56,6 @@ def convert_to_num(text):
                 return str(idx)
 
 
-def decode_calibration(line):
-    first, last = get_first_and_last_digit_in_string(line)
-    return convert_to_num(first) + convert_to_num(last)
-
-
-def decode_calibration_list(lines):
-    sum = 0
-    for line in lines.split():
-        sum += int(decode_calibration(line))
-    return sum
-
-
 def test_convert_to_num():
     assert convert_to_num("one") == "1"
     assert convert_to_num("7") == "7"
@@ -80,4 +79,4 @@ def test_decode_calibration():
 
 def test_calibration_list():
     assert decode_calibration_list(c_values) == 142
-    assert decode_calibration_list(puzzle_input) == 54578
+    assert decode_calibration_list(data.Puzzle_input.day1) == 54578
