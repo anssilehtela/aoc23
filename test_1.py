@@ -9,6 +9,7 @@ puzzle_input = """FILTERED"""
 textual_numbers = ['notexisting', 'one', 'two', 'three', 'four', 'five',
                    'six', 'seven', 'eight', 'nine', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
+
 def get_first_and_last_digit_in_string(line):
     first_index = 999
     first_value = ''
@@ -34,16 +35,6 @@ def get_first_and_last_digit_in_string(line):
     return first_value, last_value
 
 
-def test_get_first_and_last_digit_in_string():
-    i, j = get_first_and_last_digit_in_string("two1nine")
-    assert i == "two"
-    assert j == "nine"
-
-    i, j = get_first_and_last_digit_in_string("seven")
-    assert i == "seven"
-    assert j == "seven"
-
-
 def convert_to_num(text):
     try:
         int(text)
@@ -65,9 +56,20 @@ def decode_calibration_list(lines):
         sum += int(decode_calibration(line))
     return sum
 
+
 def test_convert_to_num():
     assert convert_to_num("one") == "1"
     assert convert_to_num("7") == "7"
+
+
+def test_get_first_and_last_digit_in_string():
+    i, j = get_first_and_last_digit_in_string("two1nine")
+    assert i == "two"
+    assert j == "nine"
+
+    i, j = get_first_and_last_digit_in_string("seven")
+    assert i == "seven"
+    assert j == "seven"
 
 
 def test_decode_calibration():
