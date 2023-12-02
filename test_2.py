@@ -1,6 +1,54 @@
 import pytest
 import aoc23.data as data
 
+
+def solve_puzzles(match):
+    sum_1 = 0
+    sum_2 = 0
+    for idx, val in enumerate(match.splitlines()):
+        game = Game()
+        game.parse(val)
+        if game.valid():
+            sum_1 += idx + 1
+        sum_2 += game.min_balls()
+
+    return sum_1, sum_2
+
+
+class Game:
+
+    def __init__(self) -> None:
+        self.sets = []
+
+    def parse(self, text):
+        for val in text[text.index(':')+1:].split(';'):
+            self.sets.append(val)
+
+    def valid(self):
+        for val in self.sets:
+            set = Set()
+            set.parse(val)
+            if not set.valid():
+                return False
+        return True
+
+    def min_balls(self):
+        min_red = 1
+        min_green = 1
+        min_blue = 1
+        for val in self.sets:
+            set = Set()
+            set.parse(val)
+            if set.balls['red'] > min_red:
+                min_red = set.balls['red']
+            if set.balls['green'] > min_green:
+                min_green = set.balls['green']
+            if set.balls['blue'] > min_blue:
+                min_blue = set.balls['blue']
+
+        return min_red * min_green * min_blue
+
+
 class Set:
     max_red = 12
     max_green = 13
@@ -24,51 +72,6 @@ class Set:
             return False
         return True
 
-class Game:
-
-    def __init__(self) -> None:
-        self.sets = []
-
-    def parse(self, text):
-        for val in text[text.index(':')+1:].split(';'):
-            self.sets.append(val)
-
-    def valid(self):
-        for val in self.sets:
-            set = Set()
-            set.parse(val)
-            if not set.valid():
-                return False
-        return True
-    
-    def min_balls(self):
-        min_red = 1
-        min_green = 1
-        min_blue = 1
-        for val in self.sets:
-            set = Set()
-            set.parse(val)
-            if set.balls['red'] > min_red:
-                min_red = set.balls['red']
-            if set.balls['green'] > min_green:
-                min_green = set.balls['green']
-            if set.balls['blue'] > min_blue:
-                min_blue = set.balls['blue']
-
-        return min_red * min_green * min_blue
-
-def solve_puzzles(match):
-    sum_1 = 0
-    sum_2 = 0
-    for idx, val in enumerate(match.splitlines()):
-        game = Game()
-        game.parse(val)
-        if game.valid():
-            sum_1 += idx + 1
-        sum_2 += game.min_balls()
-    
-    return sum_1, sum_2
-
 
 def test_solve_puzzles():
     match = """Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -81,19 +84,18 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
     valid_1, balls_1 = solve_puzzles(match)
     valid_2, balls_2 = solve_puzzles(puzzle_match)
 
-    assert valid_1 == 'FILTERED'
-    assert balls_1 == 'FILTERED'
-    assert valid_2 == 'FILTERED'
-    assert balls_2 == 'FILTERED'
+    assert valid_1 == "FILTERED"
+    assert balls_1 == "FILTERED"
+    assert valid_2 == "FILTERED"
+    assert balls_2 == "FILTERED"
+
 
 def test_game():
     game1 = Game()
     game2 = Game()
 
-
     game1.parse("Game 1: 3 blue; 2 red; 4 green")
     game2.parse("Game 2: 1000 red, 2 blue")
-
 
     assert len(game1.sets) == 3
     assert len(game2.sets) == 1
@@ -104,13 +106,11 @@ def test_game():
 
     assert game1.min_balls() == 24
     assert game2.min_balls() == 2000
-    
 
 
 def test_set():
     set1 = Set()
     set2 = Set()
-
 
     set1.balls['green'] = 3
     set2.balls['green'] = 300
