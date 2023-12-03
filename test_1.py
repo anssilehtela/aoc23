@@ -1,5 +1,4 @@
 import pytest
-import aoc23.data as data
 c_values = """1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
@@ -77,6 +76,6 @@ def test_decode_calibration():
     assert decode_calibration("seven") == "77"
 
 
-def test_calibration_list():
+def test_calibration_list(day1_input):
     assert decode_calibration_list(c_values) == 142
-    assert decode_calibration_list(data.Puzzle_input.day1) == 54578
+    assert decode_calibration_list(day1_input) == 54578
