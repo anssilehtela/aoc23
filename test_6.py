@@ -4,15 +4,15 @@ example = """Time:      7  15   30
 Distance:  9  40  200"""
 
 
-def parse_input(text):
-    lines = text.splitlines()
-    times = [int(l) for l in lines[0][6:].split()]
-    distances = [int(d) for d in lines[1][9:].split()]
-    races = []
+def solve_puzzle(input):
+    races = parse_input(input)
+    sum = 1
 
-    for i in range(len(times)):
-        races.append([times[i], distances[i]])
-    return races
+    for val in races:
+        wins = win_conditions(val[0], val[1])
+        sum *= len(wins)
+
+    return sum
 
 
 def win_conditions(time, record):
@@ -23,15 +23,15 @@ def win_conditions(time, record):
     return wins
 
 
-def solve_puzzle(input):
-    races = parse_input(input)
-    sum = 1
+def parse_input(text):
+    lines = text.splitlines()
+    times = [int(l) for l in lines[0][6:].split()]
+    distances = [int(d) for d in lines[1][9:].split()]
+    races = []
 
-    for val in races:
-        wins = win_conditions(val[0], val[1])
-        sum *= len(wins)
-
-    return sum
+    for i in range(len(times)):
+        races.append([times[i], distances[i]])
+    return races
 
 
 def test_solve_puzzle(day6_input):
