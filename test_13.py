@@ -132,22 +132,6 @@ def test_solve_puzzle_1(day13_input):
                           input_example_col) == 405
     assert solve_puzzle_1(day13_input) == 32371
 
-
-failing = """....#..#.
-###.##.#.
-###..##..
-##.......
-..##.##.#"""
-failingrest = """##.......
-##..#..#.
-....####.
-###..##..
-##.......
-....#..#.
-....#..#.
-..##....#"""
-
-
 def test_solve_puzzle_2(day13_input):
     assert solve_puzzle_2(input_example_row + '\n\n' +
                           input_example_col) == 400
