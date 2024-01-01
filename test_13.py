@@ -12,15 +12,15 @@ def solve_puzzle_1(input):
                 total += col
             else:
                 raise Exception('No mirror found')
-    
+
     return total
+
 
 def solve_puzzle_2(input):
     all_grids = [r.strip() for r in input.split('\n\n')]
     total = 0
-    bad = 0
 
-    for idx_all, val in enumerate(all_grids):
+    for val in all_grids:
         row = mirror_in_grid(val, 'row')
         old_row = -1
         old_col = -1
@@ -30,7 +30,6 @@ def solve_puzzle_2(input):
             col = mirror_in_grid(val, 'col')
             if col > 0:
                 old_col = col
-
 
         for i in range(len(val)):
             row = -1
@@ -48,9 +47,6 @@ def solve_puzzle_2(input):
                 col = mirror_in_grid(newval, 'col', old_col)
                 if col > -1:
                     break
-        if (row > -1 and row == old_row) or (col > -1 and col == old_col):
-            bad += 1
-            print('\nbad: ' + str(idx_all) + ', col: ' + str(col) + ', row:' + str(row) + '\n' + val)
         if row > 0:
             total += row * 100
         elif col > 0:
@@ -60,7 +56,8 @@ def solve_puzzle_2(input):
 
     return total
 
-def mirror_in_grid(grid, type, old_val = -100):
+
+def mirror_in_grid(grid, type, old_val=-100):
     grid = grid.splitlines()
     grid = [list(x) for x in grid]
 
@@ -74,7 +71,7 @@ def mirror_in_grid(grid, type, old_val = -100):
         j = i
         k = i + 1
         while j >= 0 and k < len(grid):
-            if is_mirror(grid[j],grid[k]):
+            if is_mirror(grid[j], grid[k]):
                 j -= 1
                 k += 1
                 mirror = True
@@ -83,8 +80,9 @@ def mirror_in_grid(grid, type, old_val = -100):
                 break
         if mirror:
             return i+1
-    
+
     return -1
+
 
 def is_mirror(input1, input2):
     for i in range(len(input1)):
@@ -92,12 +90,14 @@ def is_mirror(input1, input2):
             return False
     return True
 
+
 def test_is_mirror():
     input1 = '##......#'
     input2 = '#..#....#'
-    
-    assert is_mirror(input1,input1) == True
-    assert is_mirror(input1,input2) == False
+
+    assert is_mirror(input1, input1) == True
+    assert is_mirror(input1, input2) == False
+
 
 input_example_row = """#...##..#
 #....#..#
@@ -115,6 +115,7 @@ input_example_col = """#.##..##.
 ..##..##.
 #.#.##.#."""
 
+
 def test_mirror_in_grid():
     input_row = '#.##..##.\n#.##..##.'
 
@@ -125,16 +126,19 @@ def test_mirror_in_grid():
     assert mirror_in_grid(input_row_2, 'row') == -1
     assert mirror_in_grid(input_example_col, 'col') == 5
 
+
 def test_solve_puzzle_1(day13_input):
-    assert solve_puzzle_1(input_example_row + '\n\n' + input_example_col) == 405
+    assert solve_puzzle_1(input_example_row + '\n\n' +
+                          input_example_col) == 405
     assert solve_puzzle_1(day13_input) == 32371
+
 
 failing = """....#..#.
 ###.##.#.
 ###..##..
 ##.......
 ..##.##.#"""
-failingrest="""##.......
+failingrest = """##.......
 ##..#..#.
 ....####.
 ###..##..
@@ -142,8 +146,9 @@ failingrest="""##.......
 ....#..#.
 ....#..#.
 ..##....#"""
+
+
 def test_solve_puzzle_2(day13_input):
-    assert solve_puzzle_2(input_example_row + '\n\n' + input_example_col) == 400
+    assert solve_puzzle_2(input_example_row + '\n\n' +
+                          input_example_col) == 400
     assert solve_puzzle_2(day13_input) == 37416
-
-
