@@ -15,7 +15,52 @@ def solve_puzzle_1(input):
     
     return total
 
-def mirror_in_grid(grid, type):
+def solve_puzzle_2(input):
+    all_grids = [r.strip() for r in input.split('\n\n')]
+    total = 0
+    bad = 0
+
+    for idx_all, val in enumerate(all_grids):
+        row = mirror_in_grid(val, 'row')
+        old_row = -1
+        old_col = -1
+        if row > 0:
+            old_row = row
+        else:
+            col = mirror_in_grid(val, 'col')
+            if col > 0:
+                old_col = col
+
+
+        for i in range(len(val)):
+            row = -1
+            col = -1
+            if val[i] == '#':
+                newval = val[:i] + '.' + val[i+1:]
+            elif val[i] == '.':
+                newval = val[:i] + '#' + val[i+1:]
+            else:
+                continue
+            row = mirror_in_grid(newval, 'row', old_row)
+            if row > -1:
+                break
+            else:
+                col = mirror_in_grid(newval, 'col', old_col)
+                if col > -1:
+                    break
+        if (row > -1 and row == old_row) or (col > -1 and col == old_col):
+            bad += 1
+            print('\nbad: ' + str(idx_all) + ', col: ' + str(col) + ', row:' + str(row) + '\n' + val)
+        if row > 0:
+            total += row * 100
+        elif col > 0:
+            total += col
+        else:
+            raise Exception('No mirror found')
+
+    return total
+
+def mirror_in_grid(grid, type, old_val = -100):
     grid = grid.splitlines()
     grid = [list(x) for x in grid]
 
@@ -23,6 +68,8 @@ def mirror_in_grid(grid, type):
         grid = list(zip(*grid))
 
     for i in range(len(grid)):
+        if i != -100 and i == old_val - 1:
+            continue
         mirror = False
         j = i
         k = i + 1
@@ -81,5 +128,22 @@ def test_mirror_in_grid():
 def test_solve_puzzle_1(day13_input):
     assert solve_puzzle_1(input_example_row + '\n\n' + input_example_col) == 405
     assert solve_puzzle_1(day13_input) == 32371
+
+failing = """....#..#.
+###.##.#.
+###..##..
+##.......
+..##.##.#"""
+failingrest="""##.......
+##..#..#.
+....####.
+###..##..
+##.......
+....#..#.
+....#..#.
+..##....#"""
+def test_solve_puzzle_2(day13_input):
+    assert solve_puzzle_2(input_example_row + '\n\n' + input_example_col) == 400
+    assert solve_puzzle_2(day13_input) == 37416
 
 
